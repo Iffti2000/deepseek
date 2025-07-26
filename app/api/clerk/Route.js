@@ -5,6 +5,8 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
+  console.log("📥 Webhook received");
+
   const wh = new Webhook(process.env.SIGNING_SECRET)
   const headerPayload = await headers()
   const svixHeaders = {
@@ -15,6 +17,8 @@ export async function POST(req) {
   // Get payload and verify it
 
   const payload = await req.json();
+  console.log("📦 Payload: ", payload);
+
   const body = JSON.stringify(payload);
   const {data, type} = wh.verify(body, svixHeaders)
 
@@ -28,23 +32,25 @@ export async function POST(req) {
    };
 
    await connectDB();
+   console.log("🧵 Connected to DB");
 
    switch (type) {
-      case 'user.created':
-         await User.create(userData)
-         break;
-
-         case 'user.updated':
-         await User.findByIdAndUpdate(data.id, userData)
-         break;
-
-         case 'user.deleted':
-         await User.findByIdAndDelete(data.id)
-         break;
-   
-      default:
-         break;
-   }
+    case 'user.created':
+      await User.create(userData)
+      console.log("👤 User created");
+      break;
+    case 'user.updated':
+      await User.findByIdAndUpdate(data.id, userData)
+      console.log("✏️ User updated");
+      break;
+    case 'user.deleted':
+      await User.findByIdAndDelete(data.id)
+      console.log("🗑️ User deleted");
+      break;
+    default:
+      console.log("⚠️ Unhandled type", type);
+      break;
+  }
 
    return NextResponse.json({message: "Event received"});
 
