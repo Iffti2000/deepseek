@@ -47,6 +47,8 @@ export async function POST(req) {
       await User.findByIdAndDelete(data.id)
       console.log("🗑️ User deleted");
       break;
+
+      
     default:
       console.log("⚠️ Unhandled type", type);
       break;
