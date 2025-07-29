@@ -2,7 +2,7 @@ import { Webhook } from "svix";
 import connectDB from "@/config/db";
 import User from "@/models/User";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function POST(req) {
   console.log("📥 Webhook received");
@@ -13,7 +13,7 @@ export async function POST(req) {
      "svix-id": headerPayload.get("svix-id"),
      "svix-timestamp": headerPayload.get("svix-timestamp"),
      "svix-signature": headerPayload.get("svix-signature"),
-  }
+  };
   // Get payload and verify it
 
   const payload = await req.json();
@@ -48,12 +48,12 @@ export async function POST(req) {
       console.log("🗑️ User deleted");
       break;
 
-      
+
     default:
       console.log("⚠️ Unhandled type", type);
       break;
   }
 
-   return NextResponse.json({message: "Event received"});
+   return NextRequest.json({message: "Event received"});
 
 }

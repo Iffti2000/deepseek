@@ -8,8 +8,8 @@ import ChatLable from './ChatLable'
 const Sidebar = ({expand, setExpand}) => {
 
    const { openSignIn } = useClerk()
-   const {user} = useAppContext()
-   const [openMenu, setOpenMenu] = useState({id: 0, open: false})
+   const { user } = useAppContext()
+   const [ openMenu, setOpenMenu ] = useState({id: 0, open: false})
 
   return (
     <div className={`flex flex-col justify-between bg-[#212327] pt-7 transition-all z-50 max-md:absolute max-md:h-screen
